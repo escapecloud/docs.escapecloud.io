@@ -42,6 +42,7 @@ jobs:
           BASE_URL="${{ steps.pages.outputs.base_url }}"
           BASE_URL="${BASE_URL%/}"
           OUT="$BOOK_DIR/sitemap.xml"
+          ROBOTS_OUT="$BOOK_DIR/robots.txt"
 
           {
             echo '<?xml version="1.0" encoding="UTF-8"?>'
@@ -58,6 +59,13 @@ jobs:
               done
 
           echo '</urlset>' >> "$OUT"
+
+          {
+            echo 'User-agent: *'
+            echo 'Allow: /'
+            echo
+            echo "Sitemap: $BASE_URL/sitemap.xml"
+          } > "$ROBOTS_OUT"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
